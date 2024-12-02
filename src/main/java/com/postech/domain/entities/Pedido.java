@@ -70,7 +70,7 @@ public class Pedido {
         this.dataDoPagamento = dataDoPagamento;
     }
 
-    public BigDecimal getValorPedido(Pedido pedido) {
+    public static BigDecimal getValorPedido(Pedido pedido) {
         List<PedidoProduto> pedidosProdutos = pedido.getPedidosProdutos();
 
         double sum = pedidosProdutos.stream().mapToDouble(x -> x.getProduto().getPreco() * x.getQuantidade()).sum();

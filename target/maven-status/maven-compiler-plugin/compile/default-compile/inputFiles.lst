@@ -1,6 +1,7 @@
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/application/utils/EstadoPedidoUtils.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/controller/PedidoController.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/dto/response/PedidoProdutoResponseDTO.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/config/PaymentConfiguration.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/persistence/entities/ProdutoEntity.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/mappers/PedidoMapper.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/gateways/RepositorioDePedidoGatewayImpl.java
@@ -11,6 +12,7 @@
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/dto/request/ProdutoRequestDTO.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/dto/ErroDTO.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/dto/request/PedidoRequestDTO.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/client/PaymentClientImpl.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/domain/exceptions/DominioException.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/persistence/repositories/PedidoRepository.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/mappers/ProdutoMapper.java
@@ -21,6 +23,7 @@
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/Application.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/application/gateways/RepositorioDeProdutoGateway.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/persistence/repositories/ProdutoRepository.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/dto/request/PaymentRequestDTO.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/persistence/entities/PedidoEntity.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/persistence/entities/PedidoProdutoEntity.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/domain/entities/Produto.java
@@ -38,3 +41,4 @@
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/gateways/RepositorioDeProdutoGatewayImpl.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/controller/ProdutoController.java
 /home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/infra/resource/PedidoResource.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/main/java/com/postech/application/client/PaymentClient.java
