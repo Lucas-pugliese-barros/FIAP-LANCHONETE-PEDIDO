@@ -1,5 +1,6 @@
 package com.postech.config;
 
+import com.postech.application.client.PaymentClient;
 import com.postech.application.gateways.RepositorioDePedidoGateway;
 import com.postech.application.usecases.PedidoUseCases;
 import com.postech.application.usecases.ProdutoUseCases;
@@ -13,8 +14,9 @@ import org.springframework.context.annotation.Configuration;
 public class ProdutoConfiguration {
 
     @Bean
-    PedidoUseCases pedidoUseCases(RepositorioDePedidoGateway repositorioDePedidoGateway, ProdutoUseCases produtoUseCases) {
-        return new PedidoUseCases(repositorioDePedidoGateway, produtoUseCases);
+    PedidoUseCases pedidoUseCases(RepositorioDePedidoGateway repositorioDePedidoGateway, ProdutoUseCases produtoUseCases,
+                                  PaymentClient paymentClient) {
+        return new PedidoUseCases(repositorioDePedidoGateway, produtoUseCases, paymentClient);
     }
 
     @Bean

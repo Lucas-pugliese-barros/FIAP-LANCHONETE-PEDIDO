@@ -1,7 +1,9 @@
 package com.postech.application.usecases;
 
+import com.postech.application.client.PaymentClient;
 import com.postech.application.gateways.RepositorioDePedidoGateway;
 import com.postech.domain.entities.PedidoProduto;
+import com.postech.domain.exceptions.DominioException;
 import com.postech.domain.exceptions.PedidoException;
 import com.postech.domain.entities.Pedido;
 import com.postech.domain.enums.ErroPedidoEnum;
@@ -13,19 +15,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.postech.application.utils.EstadoPedidoUtils.validaEstado;
 
 public class PedidoUseCases {
 
+    private static final Logger LOG = Logger.getLogger(PedidoUseCases.class.getName());
+
     private final RepositorioDePedidoGateway repositorioDePedido;
 
     private final ProdutoUseCases produtoUseCases;
 
-    public PedidoUseCases(RepositorioDePedidoGateway repositorioDePedido, ProdutoUseCases produtoUseCases) {
+    private final PaymentClient paymentClient;
+
+    public PedidoUseCases(RepositorioDePedidoGateway repositorioDePedido, ProdutoUseCases produtoUseCases,
+                          PaymentClient paymentClient) {
         this.repositorioDePedido = repositorioDePedido;
         this.produtoUseCases = produtoUseCases;
+        this.paymentClient = paymentClient;
     }
 
     public Pedido consultaPorId(Long id) {
@@ -69,11 +79,9 @@ public class PedidoUseCases {
         return pedidos;
     }
 
-
     public Pedido checkout(Long id) {
         return this.atualizaEstadoPorIdDoPedido(id, EstadoPedidoEnum.PREPARANDO);
     }
-
 
     public void deleta(Long id) {
         try {
@@ -84,7 +92,6 @@ public class PedidoUseCases {
     }
 
     public List<Pedido> listarPedidos() {
-
         List<Pedido> pedidos = consultaTodosOsPedidos();
 
         List<Pedido> pedidosFiltrados = filtrarPedidos(pedidos, List.of(EstadoPedidoEnum.CANCELADO, EstadoPedidoEnum.FINALIZADO));
@@ -116,10 +123,19 @@ public class PedidoUseCases {
 
         pedidoSalvo.setPedidosProdutos(pedidosProdutos);
 
-        return repositorioDePedido.salvaPedido(pedidoSalvo);
+        Pedido pedidoFinal = repositorioDePedido.salvaPedido(pedidoSalvo);
+
+        try {
+            paymentClient.enviarPagamento(pedidoFinal.getClienteId(), pedidoFinal.getId(), Pedido.getValorPedido(pedidoFinal));
+        } catch (Exception exception) {
+            LOG.log(Level.SEVERE, "Error ao tentar enviar pagamento");
+            throw new DominioException("Error ao tentar enviar pagamento", exception);
+        }
+
+        return pedidoFinal;
     }
 
-    public Pedido criaPedido(PedidoRequestDTO pedidoDTO){
+    public Pedido criaPedido(PedidoRequestDTO pedidoDTO) {
         List<PedidoProdutoRequestDTO> pedidosProdutos = pedidoDTO.getPedidosProdutos();
 
         List<PedidoProduto> pedidoProdutos = new ArrayList<>();
