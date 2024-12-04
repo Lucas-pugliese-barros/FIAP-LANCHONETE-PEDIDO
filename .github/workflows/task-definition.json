@@ -18,19 +18,19 @@
       "environment": [
         {
           "name": "BACKEND_PAYMENT_URL",
-          "value": "http://localhost:8080/pagamento"
+          "value": "{{BACKEND_PAYMENT_URL}}"
         },
         {
           "name": "DB_USER",
-          "value": "postgres"
+          "value": "{{DB_USER}}"
         },
         {
           "name": "DB_URL",
-          "value": "fiap.cjcm8auqoub9.us-east-1.rds.amazonaws.com"
+          "value": "{{DB_URL}}"
         },
         {
           "name": "DB_PASSWORD",
-          "value": "postgres"
+          "value": "{{DB_PASSWORD}}"
         }
       ],
       "environmentFiles": [],

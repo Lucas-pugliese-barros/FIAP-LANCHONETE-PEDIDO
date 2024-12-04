@@ -57,6 +57,7 @@ jobs:
           sed -i "s|{{DB_URL}}|${{ secrets.DB_URL }}|g" ${{ env.ECS_TASK_DEFINITION }}
           sed -i "s|{{DB_USER}}|${{ secrets.DB_USER }}|g" ${{ env.ECS_TASK_DEFINITION }}
           sed -i "s|{{DB_PASSWORD}}|${{ secrets.DB_PASSWORD }}|g" ${{ env.ECS_TASK_DEFINITION }}
+          sed -i "s|{{BACKEND_PAYMENT_URL}}|${{ secrets.BACKEND_PAYMENT_URL }}|g" ${{ env.ECS_TASK_DEFINITION }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
