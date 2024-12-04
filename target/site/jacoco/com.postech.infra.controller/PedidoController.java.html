@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PedidoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">com.postech.infra.controller</a> &gt; <span class="el_source">PedidoController.java</span></div><h1>PedidoController.java</h1><pre class="source lang-java linenums">package com.postech.infra.controller;
+
+import com.postech.application.usecases.PedidoUseCases;
+import com.postech.domain.entities.Pedido;
+import com.postech.domain.enums.EstadoPedidoEnum;
+import com.postech.infra.dto.request.PedidoRequestDTO;
+import com.postech.infra.dto.response.CheckoutResponseDTO;
+import com.postech.infra.mappers.PedidoMapper;
+import com.postech.infra.resource.PedidoResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class PedidoController implements PedidoResource {
+
+    private final PedidoUseCases useCases;
+    private final PedidoMapper mapper;
+
+<span class="fc" id="L22">    public PedidoController(PedidoUseCases useCases, PedidoMapper mapper) {</span>
+<span class="fc" id="L23">        this.useCases = useCases;</span>
+<span class="fc" id="L24">        this.mapper = mapper;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Override
+    public ResponseEntity&lt;Object&gt; criarPedido(PedidoRequestDTO pedidoDTO) {
+<span class="fc" id="L29">        Pedido pedido = useCases.criaPedido(pedidoDTO);</span>
+<span class="fc" id="L30">        Pedido pedidoSalvo = useCases.salvarPedido(pedido);</span>
+<span class="fc" id="L31">        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.paraResponseDto(pedidoSalvo));</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;Object&gt; consultarPedidoPorId(Long id) {
+<span class="fc" id="L36">        Pedido pedido = useCases.consultaPorId(id);</span>
+<span class="fc" id="L37">        return ResponseEntity.ok().body(mapper.paraResponseDto(pedido));</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;Object&gt; notificarPedidoEstado(Long id) {
+<span class="fc" id="L42">        Pedido pedido = useCases.notificaEstado(id);</span>
+<span class="fc" id="L43">        return ResponseEntity.ok().body(pedido.getEstado());</span>
+    }
+
+
+    @Override
+    public ResponseEntity&lt;Object&gt; listarPedidos() {
+<span class="fc" id="L49">        List&lt;Pedido&gt; pedidos = useCases.listarPedidos();</span>
+<span class="fc" id="L50">        return ResponseEntity.ok().body(mapper.paraDTOLista(pedidos));</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;Object&gt; atualizarEstadoPedidoPorId(Long id, EstadoPedidoEnum estado) {
+<span class="fc" id="L55">        Pedido pedido = useCases.atualizaEstadoPorIdDoPedido(id, estado);</span>
+<span class="fc" id="L56">        return ResponseEntity.ok().body(mapper.paraResponseDto(pedido));</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;Object&gt; checkout(Long id) {
+<span class="fc" id="L61">        Pedido checkout = useCases.checkout(id);</span>
+<span class="fc" id="L62">        return ResponseEntity.ok().body(new CheckoutResponseDTO(&quot;Pedido realizado e enviado para a fila da cozinha&quot;, mapper.paraResponseDto(checkout)));</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;Object&gt; deletarPedido(Long id) {
+<span class="fc" id="L67">        useCases.deleta(id);</span>
+<span class="fc" id="L68">        return ResponseEntity.noContent().build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

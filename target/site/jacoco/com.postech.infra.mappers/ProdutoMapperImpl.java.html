@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProdutoMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">com.postech.infra.mappers</a> &gt; <span class="el_source">ProdutoMapperImpl.java</span></div><h1>ProdutoMapperImpl.java</h1><pre class="source lang-java linenums">package com.postech.infra.mappers;
+
+import com.postech.domain.entities.Produto;
+import com.postech.domain.enums.CategoriaProdutoEnum;
+import com.postech.infra.dto.request.ProdutoRequestDTO;
+import com.postech.infra.persistence.entities.ProdutoEntity;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2024-12-03T23:11:49-0300&quot;,
+    comments = &quot;version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Azul Systems, Inc.)&quot;
+)
+@Component
+<span class="nc" id="L18">public class ProdutoMapperImpl implements ProdutoMapper {</span>
+
+    @Override
+    public ProdutoEntity paraEntidade(Produto produto) {
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if ( produto == null ) {</span>
+<span class="nc" id="L23">            return null;</span>
+        }
+
+<span class="nc" id="L26">        ProdutoEntity produtoEntity = new ProdutoEntity();</span>
+
+<span class="nc" id="L28">        produtoEntity.setId( produto.getId() );</span>
+<span class="nc" id="L29">        produtoEntity.setNome( produto.getNome() );</span>
+<span class="nc" id="L30">        produtoEntity.setDescricao( produto.getDescricao() );</span>
+<span class="nc" id="L31">        produtoEntity.setCategoria( produto.getCategoria() );</span>
+<span class="nc" id="L32">        produtoEntity.setPreco( produto.getPreco() );</span>
+
+<span class="nc" id="L34">        return produtoEntity;</span>
+    }
+
+    @Override
+    public Produto paraDominio(ProdutoEntity produtoEntity) {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if ( produtoEntity == null ) {</span>
+<span class="nc" id="L40">            return null;</span>
+        }
+
+<span class="nc" id="L43">        Long id = null;</span>
+<span class="nc" id="L44">        String nome = null;</span>
+<span class="nc" id="L45">        String descricao = null;</span>
+<span class="nc" id="L46">        CategoriaProdutoEnum categoria = null;</span>
+<span class="nc" id="L47">        Double preco = null;</span>
+
+<span class="nc" id="L49">        id = produtoEntity.getId();</span>
+<span class="nc" id="L50">        nome = produtoEntity.getNome();</span>
+<span class="nc" id="L51">        descricao = produtoEntity.getDescricao();</span>
+<span class="nc" id="L52">        categoria = produtoEntity.getCategoria();</span>
+<span class="nc" id="L53">        preco = produtoEntity.getPreco();</span>
+
+<span class="nc" id="L55">        Produto produto = new Produto( id, nome, descricao, categoria, preco );</span>
+
+<span class="nc" id="L57">        return produto;</span>
+    }
+
+    @Override
+    public Produto paraDominio(ProdutoRequestDTO produtoRequestDTO) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if ( produtoRequestDTO == null ) {</span>
+<span class="nc" id="L63">            return null;</span>
+        }
+
+<span class="nc" id="L66">        Long id = null;</span>
+<span class="nc" id="L67">        String nome = null;</span>
+<span class="nc" id="L68">        String descricao = null;</span>
+<span class="nc" id="L69">        CategoriaProdutoEnum categoria = null;</span>
+<span class="nc" id="L70">        Double preco = null;</span>
+
+<span class="nc" id="L72">        id = produtoRequestDTO.getId();</span>
+<span class="nc" id="L73">        nome = produtoRequestDTO.getNome();</span>
+<span class="nc" id="L74">        descricao = produtoRequestDTO.getDescricao();</span>
+<span class="nc" id="L75">        categoria = produtoRequestDTO.getCategoria();</span>
+<span class="nc" id="L76">        preco = produtoRequestDTO.getPreco();</span>
+
+<span class="nc" id="L78">        Produto produto = new Produto( id, nome, descricao, categoria, preco );</span>
+
+<span class="nc" id="L80">        return produto;</span>
+    }
+
+    @Override
+    public Produto paraDominio(Produto produto) {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if ( produto == null ) {</span>
+<span class="nc" id="L86">            return null;</span>
+        }
+
+<span class="nc" id="L89">        Long id = null;</span>
+<span class="nc" id="L90">        String nome = null;</span>
+<span class="nc" id="L91">        String descricao = null;</span>
+<span class="nc" id="L92">        CategoriaProdutoEnum categoria = null;</span>
+<span class="nc" id="L93">        Double preco = null;</span>
+
+<span class="nc" id="L95">        id = produto.getId();</span>
+<span class="nc" id="L96">        nome = produto.getNome();</span>
+<span class="nc" id="L97">        descricao = produto.getDescricao();</span>
+<span class="nc" id="L98">        categoria = produto.getCategoria();</span>
+<span class="nc" id="L99">        preco = produto.getPreco();</span>
+
+<span class="nc" id="L101">        Produto produto1 = new Produto( id, nome, descricao, categoria, preco );</span>
+
+<span class="nc" id="L103">        return produto1;</span>
+    }
+
+    @Override
+    public ProdutoRequestDTO paraDTO(Produto produto) {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if ( produto == null ) {</span>
+<span class="nc" id="L109">            return null;</span>
+        }
+
+<span class="nc" id="L112">        ProdutoRequestDTO produtoRequestDTO = new ProdutoRequestDTO();</span>
+
+<span class="nc" id="L114">        produtoRequestDTO.setId( produto.getId() );</span>
+<span class="nc" id="L115">        produtoRequestDTO.setNome( produto.getNome() );</span>
+<span class="nc" id="L116">        produtoRequestDTO.setDescricao( produto.getDescricao() );</span>
+<span class="nc" id="L117">        produtoRequestDTO.setCategoria( produto.getCategoria() );</span>
+<span class="nc" id="L118">        produtoRequestDTO.setPreco( produto.getPreco() );</span>
+
+<span class="nc" id="L120">        return produtoRequestDTO;</span>
+    }
+
+    @Override
+    public List&lt;ProdutoEntity&gt; paraEntidadeLista(List&lt;Produto&gt; produtos) {
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if ( produtos == null ) {</span>
+<span class="nc" id="L126">            return null;</span>
+        }
+
+<span class="nc" id="L129">        List&lt;ProdutoEntity&gt; list = new ArrayList&lt;ProdutoEntity&gt;( produtos.size() );</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for ( Produto produto : produtos ) {</span>
+<span class="nc" id="L131">            list.add( paraEntidade( produto ) );</span>
+<span class="nc" id="L132">        }</span>
+
+<span class="nc" id="L134">        return list;</span>
+    }
+
+    @Override
+    public List&lt;Produto&gt; paraDominioLista(List&lt;ProdutoEntity&gt; produtosEntidade) {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if ( produtosEntidade == null ) {</span>
+<span class="nc" id="L140">            return null;</span>
+        }
+
+<span class="nc" id="L143">        List&lt;Produto&gt; list = new ArrayList&lt;Produto&gt;( produtosEntidade.size() );</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        for ( ProdutoEntity produtoEntity : produtosEntidade ) {</span>
+<span class="nc" id="L145">            list.add( paraDominio( produtoEntity ) );</span>
+<span class="nc" id="L146">        }</span>
+
+<span class="nc" id="L148">        return list;</span>
+    }
+
+    @Override
+    public List&lt;Produto&gt; paraDominioListaDTO(List&lt;ProdutoRequestDTO&gt; produtosDTO) {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if ( produtosDTO == null ) {</span>
+<span class="nc" id="L154">            return null;</span>
+        }
+
+<span class="nc" id="L157">        List&lt;Produto&gt; list = new ArrayList&lt;Produto&gt;( produtosDTO.size() );</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        for ( ProdutoRequestDTO produtoRequestDTO : produtosDTO ) {</span>
+<span class="nc" id="L159">            list.add( paraDominio( produtoRequestDTO ) );</span>
+<span class="nc" id="L160">        }</span>
+
+<span class="nc" id="L162">        return list;</span>
+    }
+
+    @Override
+    public List&lt;ProdutoRequestDTO&gt; paraDTOListaDominio(List&lt;Produto&gt; produtos) {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        if ( produtos == null ) {</span>
+<span class="nc" id="L168">            return null;</span>
+        }
+
+<span class="nc" id="L171">        List&lt;ProdutoRequestDTO&gt; list = new ArrayList&lt;ProdutoRequestDTO&gt;( produtos.size() );</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        for ( Produto produto : produtos ) {</span>
+<span class="nc" id="L173">            list.add( paraDTO( produto ) );</span>
+<span class="nc" id="L174">        }</span>
+
+<span class="nc" id="L176">        return list;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

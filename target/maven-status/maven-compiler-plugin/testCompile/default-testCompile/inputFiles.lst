@@ -1,5 +1,9 @@
-/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/utils/EstadoPedidoUtilsTest.java
-/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/domain/PedidoTest.java
-/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/domain/ValidacaoUtilsTest.java
-/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/usecases/ProdutoUseCasesTest.java
-/home/lpugliese/FIAPProjects/FourthProjectMicroService/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/usecases/PedidoUseCasesTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/utils/EstadoPedidoUtilsTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/infra/controller/ProdutoControllerTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/infra/controller/PedidoControllerTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/usecases/PedidoUseCasesTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/application/usecases/ProdutoUseCasesTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/domain/ValidacaoUtilsTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/domain/PedidoTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/infra/RepositorioDeProdutoGatewayTest.java
+/home/lpugliese/FIAPProjects/FourthProjectMicroService/Fork-FIAP_LANCHONETE_PEDIDO/FIAP-LANCHONETE-PEDIDO/src/test/java/com/postech/infra/RepositorioDePedidoGatewayTest.java

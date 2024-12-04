@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProdutoUseCases.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">com.postech.application.usecases</a> &gt; <span class="el_source">ProdutoUseCases.java</span></div><h1>ProdutoUseCases.java</h1><pre class="source lang-java linenums">package com.postech.application.usecases;
+
+import com.postech.application.gateways.RepositorioDeProdutoGateway;
+import com.postech.domain.exceptions.ProdutoException;
+import com.postech.domain.entities.Produto;
+import com.postech.domain.enums.CategoriaProdutoEnum;
+import com.postech.domain.enums.ErroProdutoEnum;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+
+public class ProdutoUseCases  {
+
+    private final RepositorioDeProdutoGateway repositorio;
+
+<span class="fc" id="L16">    public ProdutoUseCases(RepositorioDeProdutoGateway repositorio) {</span>
+<span class="fc" id="L17">        this.repositorio = repositorio;</span>
+<span class="fc" id="L18">    }</span>
+
+    public Produto consultaPorId(Long id) {
+
+<span class="fc" id="L22">        Produto produto = repositorio.consultaProdutoPorId(id);</span>
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (produto == null) {</span>
+<span class="fc" id="L25">            throw new ProdutoException(ErroProdutoEnum.PRODUTO_NAO_ENCONTRADO);</span>
+        }
+
+<span class="fc" id="L28">        return produto;</span>
+    }
+
+    public List&lt;Produto&gt; consultaTodos(String categoriaProduto) {
+<span class="fc" id="L32">        return repositorio.consultaTodosProdutos(CategoriaProdutoEnum.paraEnum(categoriaProduto));</span>
+    }
+
+
+    public List&lt;Produto&gt; consultaPorCategoria(CategoriaProdutoEnum categoriaProduto) {
+<span class="nc" id="L37">        return repositorio.consultaProdutosPorCategoria(categoriaProduto);</span>
+    }
+
+    public Produto criarProduto(Produto produto) {
+<span class="fc" id="L41">        return repositorio.salvaProduto(produto);</span>
+    }
+
+    public Produto atualizaProduto(Long id, Produto novoProduto) {
+
+<span class="fc" id="L46">        var produto = repositorio.consultaProdutoPorId(id);</span>
+
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (produto == null) {</span>
+<span class="fc" id="L49">            throw new ProdutoException(ErroProdutoEnum.PRODUTO_NAO_ENCONTRADO);</span>
+        }
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (!StringUtils.isBlank(novoProduto.getNome())) produto.setNome(novoProduto.getNome());</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (!StringUtils.isBlank(novoProduto.getDescricao())) produto.setDescricao(novoProduto.getDescricao());</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (novoProduto.getCategoria() != null) produto.setCategoria(novoProduto.getCategoria());</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (novoProduto.getPreco() != null) produto.setPreco(novoProduto.getPreco());</span>
+
+<span class="fc" id="L57">        return repositorio.salvaProduto(produto);</span>
+    }
+
+
+    public void deletaPorId(Long id) {
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (repositorio.consultaProdutoPorId(id) == null) {</span>
+<span class="fc" id="L64">            throw new ProdutoException(ErroProdutoEnum.PRODUTO_NAO_ENCONTRADO);</span>
+        }
+
+        try {
+<span class="fc" id="L68">            repositorio.deletaProdutoPorId(id);</span>
+<span class="fc" id="L69">        } catch (Exception ignore) {</span>
+<span class="fc" id="L70">            throw new ProdutoException(ErroProdutoEnum.PRODUTO_REFERENCIADO_EM_PEDIDO);</span>
+<span class="fc" id="L71">        }</span>
+
+<span class="fc" id="L73">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
