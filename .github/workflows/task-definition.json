@@ -1,0 +1,84 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:010438461949:task-definition/pedido:1",
+  "containerDefinitions": [
+    {
+      "name": "pedido",
+      "image": "010438461949.dkr.ecr.us-east-1.amazonaws.com/pedido:latest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "pedido-8080-tcp",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "BACKEND_PAYMENT_URL",
+          "value": "{{BACKEND_PAYMENT_URL}}"
+        },
+        {
+          "name": "DB_USER",
+          "value": "{{DB_USER}}"
+        },
+        {
+          "name": "DB_URL",
+          "value": "{{DB_URL}}"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value": "{{DB_PASSWORD}}"
+        }
+      ],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "systemControls": []
+    }
+  ],
+  "family": "pedido",
+  "taskRoleArn": "arn:aws:iam::010438461949:role/pedido",
+  "executionRoleArn": "arn:aws:iam::010438461949:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "6144",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2024-12-03T23:15:33.853Z",
+  "registeredBy": "arn:aws:iam::010438461949:root",
+  "tags": []
+}
