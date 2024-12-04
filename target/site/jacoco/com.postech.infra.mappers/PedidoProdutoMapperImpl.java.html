@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PedidoProdutoMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">com.postech.infra.mappers</a> &gt; <span class="el_source">PedidoProdutoMapperImpl.java</span></div><h1>PedidoProdutoMapperImpl.java</h1><pre class="source lang-java linenums">package com.postech.infra.mappers;
+
+import com.postech.domain.entities.Pedido;
+import com.postech.domain.entities.PedidoProduto;
+import com.postech.domain.entities.Produto;
+import com.postech.domain.enums.CategoriaProdutoEnum;
+import com.postech.domain.enums.EstadoPedidoEnum;
+import com.postech.infra.dto.request.ProdutoRequestDTO;
+import com.postech.infra.dto.response.PedidoProdutoResponseDTO;
+import com.postech.infra.dto.response.PedidoResponseDTO;
+import com.postech.infra.persistence.entities.PedidoEntity;
+import com.postech.infra.persistence.entities.PedidoProdutoEntity;
+import com.postech.infra.persistence.entities.ProdutoEntity;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2024-12-03T23:11:49-0300&quot;,
+    comments = &quot;version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Azul Systems, Inc.)&quot;
+)
+@Component
+<span class="nc" id="L26">public class PedidoProdutoMapperImpl implements PedidoProdutoMapper {</span>
+
+    @Override
+    public PedidoProdutoEntity paraEntidade(PedidoProduto pedidoProduto) {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if ( pedidoProduto == null ) {</span>
+<span class="nc" id="L31">            return null;</span>
+        }
+
+<span class="nc" id="L34">        PedidoProdutoEntity pedidoProdutoEntity = new PedidoProdutoEntity();</span>
+
+<span class="nc" id="L36">        pedidoProdutoEntity.setId( pedidoProduto.getId() );</span>
+<span class="nc" id="L37">        pedidoProdutoEntity.setPedido( pedidoToPedidoEntity( pedidoProduto.getPedido() ) );</span>
+<span class="nc" id="L38">        pedidoProdutoEntity.setProduto( produtoToProdutoEntity( pedidoProduto.getProduto() ) );</span>
+<span class="nc" id="L39">        pedidoProdutoEntity.setQuantidade( pedidoProduto.getQuantidade() );</span>
+
+<span class="nc" id="L41">        return pedidoProdutoEntity;</span>
+    }
+
+    @Override
+    public PedidoProduto paraDominio(PedidoProdutoEntity pedidoProdutoEntity) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if ( pedidoProdutoEntity == null ) {</span>
+<span class="nc" id="L47">            return null;</span>
+        }
+
+<span class="nc" id="L50">        PedidoProduto pedidoProduto = new PedidoProduto();</span>
+
+<span class="nc" id="L52">        pedidoProduto.setId( pedidoProdutoEntity.getId() );</span>
+<span class="nc" id="L53">        pedidoProduto.setPedido( pedidoEntityToPedido( pedidoProdutoEntity.getPedido() ) );</span>
+<span class="nc" id="L54">        pedidoProduto.setProduto( produtoEntityToProduto( pedidoProdutoEntity.getProduto() ) );</span>
+<span class="nc" id="L55">        pedidoProduto.setQuantidade( pedidoProdutoEntity.getQuantidade() );</span>
+
+<span class="nc" id="L57">        return pedidoProduto;</span>
+    }
+
+    @Override
+    public PedidoProduto paraDominio(PedidoProdutoResponseDTO pedidoProdutoResponseDTO) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if ( pedidoProdutoResponseDTO == null ) {</span>
+<span class="nc" id="L63">            return null;</span>
+        }
+
+<span class="nc" id="L66">        PedidoProduto pedidoProduto = new PedidoProduto();</span>
+
+<span class="nc" id="L68">        pedidoProduto.setId( pedidoProdutoResponseDTO.getId() );</span>
+<span class="nc" id="L69">        pedidoProduto.setPedido( pedidoResponseDTOToPedido( pedidoProdutoResponseDTO.getPedido() ) );</span>
+<span class="nc" id="L70">        pedidoProduto.setProduto( produtoRequestDTOToProduto( pedidoProdutoResponseDTO.getProduto() ) );</span>
+<span class="nc" id="L71">        pedidoProduto.setQuantidade( pedidoProdutoResponseDTO.getQuantidade() );</span>
+
+<span class="nc" id="L73">        return pedidoProduto;</span>
+    }
+
+    @Override
+    public PedidoProdutoResponseDTO paraDTO(PedidoProduto pedidoProduto) {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if ( pedidoProduto == null ) {</span>
+<span class="nc" id="L79">            return null;</span>
+        }
+
+<span class="nc" id="L82">        PedidoProdutoResponseDTO pedidoProdutoResponseDTO = new PedidoProdutoResponseDTO();</span>
+
+<span class="nc" id="L84">        pedidoProdutoResponseDTO.setId( pedidoProduto.getId() );</span>
+<span class="nc" id="L85">        pedidoProdutoResponseDTO.setPedido( pedidoToPedidoResponseDTO( pedidoProduto.getPedido() ) );</span>
+<span class="nc" id="L86">        pedidoProdutoResponseDTO.setProduto( produtoToProdutoRequestDTO( pedidoProduto.getProduto() ) );</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if ( pedidoProduto.getQuantidade() != null ) {</span>
+<span class="nc" id="L88">            pedidoProdutoResponseDTO.setQuantidade( pedidoProduto.getQuantidade() );</span>
+        }
+
+<span class="nc" id="L91">        return pedidoProdutoResponseDTO;</span>
+    }
+
+    @Override
+    public List&lt;PedidoProdutoEntity&gt; paraEntidadeLista(List&lt;PedidoProduto&gt; pedidosProdutos) {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if ( pedidosProdutos == null ) {</span>
+<span class="nc" id="L97">            return null;</span>
+        }
+
+<span class="nc" id="L100">        List&lt;PedidoProdutoEntity&gt; list = new ArrayList&lt;PedidoProdutoEntity&gt;( pedidosProdutos.size() );</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        for ( PedidoProduto pedidoProduto : pedidosProdutos ) {</span>
+<span class="nc" id="L102">            list.add( paraEntidade( pedidoProduto ) );</span>
+<span class="nc" id="L103">        }</span>
+
+<span class="nc" id="L105">        return list;</span>
+    }
+
+    @Override
+    public List&lt;PedidoProduto&gt; paraDominioListaEntidade(List&lt;PedidoProdutoEntity&gt; pedidosProdutosEntidade) {
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if ( pedidosProdutosEntidade == null ) {</span>
+<span class="nc" id="L111">            return null;</span>
+        }
+
+<span class="nc" id="L114">        List&lt;PedidoProduto&gt; list = new ArrayList&lt;PedidoProduto&gt;( pedidosProdutosEntidade.size() );</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        for ( PedidoProdutoEntity pedidoProdutoEntity : pedidosProdutosEntidade ) {</span>
+<span class="nc" id="L116">            list.add( paraDominio( pedidoProdutoEntity ) );</span>
+<span class="nc" id="L117">        }</span>
+
+<span class="nc" id="L119">        return list;</span>
+    }
+
+    @Override
+    public List&lt;PedidoProduto&gt; paraDominioListaDTO(List&lt;PedidoProdutoResponseDTO&gt; pedidosProdutosDTO) {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if ( pedidosProdutosDTO == null ) {</span>
+<span class="nc" id="L125">            return null;</span>
+        }
+
+<span class="nc" id="L128">        List&lt;PedidoProduto&gt; list = new ArrayList&lt;PedidoProduto&gt;( pedidosProdutosDTO.size() );</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        for ( PedidoProdutoResponseDTO pedidoProdutoResponseDTO : pedidosProdutosDTO ) {</span>
+<span class="nc" id="L130">            list.add( paraDominio( pedidoProdutoResponseDTO ) );</span>
+<span class="nc" id="L131">        }</span>
+
+<span class="nc" id="L133">        return list;</span>
+    }
+
+    @Override
+    public List&lt;PedidoProdutoResponseDTO&gt; paraDTOLista(List&lt;PedidoProduto&gt; pedidosProdutos) {
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if ( pedidosProdutos == null ) {</span>
+<span class="nc" id="L139">            return null;</span>
+        }
+
+<span class="nc" id="L142">        List&lt;PedidoProdutoResponseDTO&gt; list = new ArrayList&lt;PedidoProdutoResponseDTO&gt;( pedidosProdutos.size() );</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        for ( PedidoProduto pedidoProduto : pedidosProdutos ) {</span>
+<span class="nc" id="L144">            list.add( paraDTO( pedidoProduto ) );</span>
+<span class="nc" id="L145">        }</span>
+
+<span class="nc" id="L147">        return list;</span>
+    }
+
+    protected PedidoEntity pedidoToPedidoEntity(Pedido pedido) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if ( pedido == null ) {</span>
+<span class="nc" id="L152">            return null;</span>
+        }
+
+<span class="nc" id="L155">        PedidoEntity pedidoEntity = new PedidoEntity();</span>
+
+<span class="nc" id="L157">        pedidoEntity.setId( pedido.getId() );</span>
+<span class="nc" id="L158">        pedidoEntity.setClienteId( pedido.getClienteId() );</span>
+<span class="nc" id="L159">        pedidoEntity.setEstado( pedido.getEstado() );</span>
+<span class="nc" id="L160">        pedidoEntity.setDataDoPagamento( pedido.getDataDoPagamento() );</span>
+
+<span class="nc" id="L162">        return pedidoEntity;</span>
+    }
+
+    protected ProdutoEntity produtoToProdutoEntity(Produto produto) {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if ( produto == null ) {</span>
+<span class="nc" id="L167">            return null;</span>
+        }
+
+<span class="nc" id="L170">        ProdutoEntity produtoEntity = new ProdutoEntity();</span>
+
+<span class="nc" id="L172">        produtoEntity.setId( produto.getId() );</span>
+<span class="nc" id="L173">        produtoEntity.setNome( produto.getNome() );</span>
+<span class="nc" id="L174">        produtoEntity.setDescricao( produto.getDescricao() );</span>
+<span class="nc" id="L175">        produtoEntity.setCategoria( produto.getCategoria() );</span>
+<span class="nc" id="L176">        produtoEntity.setPreco( produto.getPreco() );</span>
+
+<span class="nc" id="L178">        return produtoEntity;</span>
+    }
+
+    protected Pedido pedidoEntityToPedido(PedidoEntity pedidoEntity) {
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if ( pedidoEntity == null ) {</span>
+<span class="nc" id="L183">            return null;</span>
+        }
+
+<span class="nc" id="L186">        Long id = null;</span>
+<span class="nc" id="L187">        Long clienteId = null;</span>
+<span class="nc" id="L188">        EstadoPedidoEnum estado = null;</span>
+<span class="nc" id="L189">        LocalDate dataDoPagamento = null;</span>
+
+<span class="nc" id="L191">        id = pedidoEntity.getId();</span>
+<span class="nc" id="L192">        clienteId = pedidoEntity.getClienteId();</span>
+<span class="nc" id="L193">        estado = pedidoEntity.getEstado();</span>
+<span class="nc" id="L194">        dataDoPagamento = pedidoEntity.getDataDoPagamento();</span>
+
+<span class="nc" id="L196">        List&lt;PedidoProduto&gt; pedidosProdutos = null;</span>
+
+<span class="nc" id="L198">        Pedido pedido = new Pedido( id, clienteId, estado, dataDoPagamento, pedidosProdutos );</span>
+
+<span class="nc" id="L200">        return pedido;</span>
+    }
+
+    protected Produto produtoEntityToProduto(ProdutoEntity produtoEntity) {
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if ( produtoEntity == null ) {</span>
+<span class="nc" id="L205">            return null;</span>
+        }
+
+<span class="nc" id="L208">        Long id = null;</span>
+<span class="nc" id="L209">        String nome = null;</span>
+<span class="nc" id="L210">        String descricao = null;</span>
+<span class="nc" id="L211">        CategoriaProdutoEnum categoria = null;</span>
+<span class="nc" id="L212">        Double preco = null;</span>
+
+<span class="nc" id="L214">        id = produtoEntity.getId();</span>
+<span class="nc" id="L215">        nome = produtoEntity.getNome();</span>
+<span class="nc" id="L216">        descricao = produtoEntity.getDescricao();</span>
+<span class="nc" id="L217">        categoria = produtoEntity.getCategoria();</span>
+<span class="nc" id="L218">        preco = produtoEntity.getPreco();</span>
+
+<span class="nc" id="L220">        Produto produto = new Produto( id, nome, descricao, categoria, preco );</span>
+
+<span class="nc" id="L222">        return produto;</span>
+    }
+
+    protected Pedido pedidoResponseDTOToPedido(PedidoResponseDTO pedidoResponseDTO) {
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if ( pedidoResponseDTO == null ) {</span>
+<span class="nc" id="L227">            return null;</span>
+        }
+
+<span class="nc" id="L230">        Long id = null;</span>
+<span class="nc" id="L231">        Long clienteId = null;</span>
+<span class="nc" id="L232">        EstadoPedidoEnum estado = null;</span>
+<span class="nc" id="L233">        LocalDate dataDoPagamento = null;</span>
+
+<span class="nc" id="L235">        id = pedidoResponseDTO.id();</span>
+<span class="nc" id="L236">        clienteId = pedidoResponseDTO.clienteId();</span>
+<span class="nc" id="L237">        estado = pedidoResponseDTO.estado();</span>
+<span class="nc" id="L238">        dataDoPagamento = pedidoResponseDTO.dataDoPagamento();</span>
+
+<span class="nc" id="L240">        List&lt;PedidoProduto&gt; pedidosProdutos = null;</span>
+
+<span class="nc" id="L242">        Pedido pedido = new Pedido( id, clienteId, estado, dataDoPagamento, pedidosProdutos );</span>
+
+<span class="nc" id="L244">        return pedido;</span>
+    }
+
+    protected Produto produtoRequestDTOToProduto(ProdutoRequestDTO produtoRequestDTO) {
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if ( produtoRequestDTO == null ) {</span>
+<span class="nc" id="L249">            return null;</span>
+        }
+
+<span class="nc" id="L252">        Long id = null;</span>
+<span class="nc" id="L253">        String nome = null;</span>
+<span class="nc" id="L254">        String descricao = null;</span>
+<span class="nc" id="L255">        CategoriaProdutoEnum categoria = null;</span>
+<span class="nc" id="L256">        Double preco = null;</span>
+
+<span class="nc" id="L258">        id = produtoRequestDTO.getId();</span>
+<span class="nc" id="L259">        nome = produtoRequestDTO.getNome();</span>
+<span class="nc" id="L260">        descricao = produtoRequestDTO.getDescricao();</span>
+<span class="nc" id="L261">        categoria = produtoRequestDTO.getCategoria();</span>
+<span class="nc" id="L262">        preco = produtoRequestDTO.getPreco();</span>
+
+<span class="nc" id="L264">        Produto produto = new Produto( id, nome, descricao, categoria, preco );</span>
+
+<span class="nc" id="L266">        return produto;</span>
+    }
+
+    protected PedidoResponseDTO pedidoToPedidoResponseDTO(Pedido pedido) {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if ( pedido == null ) {</span>
+<span class="nc" id="L271">            return null;</span>
+        }
+
+<span class="nc" id="L274">        Long id = null;</span>
+<span class="nc" id="L275">        Long clienteId = null;</span>
+<span class="nc" id="L276">        EstadoPedidoEnum estado = null;</span>
+<span class="nc" id="L277">        LocalDate dataDoPagamento = null;</span>
+
+<span class="nc" id="L279">        id = pedido.getId();</span>
+<span class="nc" id="L280">        clienteId = pedido.getClienteId();</span>
+<span class="nc" id="L281">        estado = pedido.getEstado();</span>
+<span class="nc" id="L282">        dataDoPagamento = pedido.getDataDoPagamento();</span>
+
+<span class="nc" id="L284">        List&lt;PedidoProdutoResponseDTO&gt; pedidosProdutos = null;</span>
+
+<span class="nc" id="L286">        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO( id, clienteId, estado, pedidosProdutos, dataDoPagamento );</span>
+
+<span class="nc" id="L288">        return pedidoResponseDTO;</span>
+    }
+
+    protected ProdutoRequestDTO produtoToProdutoRequestDTO(Produto produto) {
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if ( produto == null ) {</span>
+<span class="nc" id="L293">            return null;</span>
+        }
+
+<span class="nc" id="L296">        ProdutoRequestDTO produtoRequestDTO = new ProdutoRequestDTO();</span>
+
+<span class="nc" id="L298">        produtoRequestDTO.setId( produto.getId() );</span>
+<span class="nc" id="L299">        produtoRequestDTO.setNome( produto.getNome() );</span>
+<span class="nc" id="L300">        produtoRequestDTO.setDescricao( produto.getDescricao() );</span>
+<span class="nc" id="L301">        produtoRequestDTO.setCategoria( produto.getCategoria() );</span>
+<span class="nc" id="L302">        produtoRequestDTO.setPreco( produto.getPreco() );</span>
+
+<span class="nc" id="L304">        return produtoRequestDTO;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

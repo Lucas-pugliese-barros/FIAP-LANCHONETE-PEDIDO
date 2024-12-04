@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PedidoUseCases.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">com.postech.application.usecases</a> &gt; <span class="el_source">PedidoUseCases.java</span></div><h1>PedidoUseCases.java</h1><pre class="source lang-java linenums">package com.postech.application.usecases;
+
+import com.postech.application.client.PaymentClient;
+import com.postech.application.gateways.RepositorioDePedidoGateway;
+import com.postech.domain.entities.PedidoProduto;
+import com.postech.domain.exceptions.DominioException;
+import com.postech.domain.exceptions.PedidoException;
+import com.postech.domain.entities.Pedido;
+import com.postech.domain.enums.ErroPedidoEnum;
+import com.postech.domain.enums.EstadoPedidoEnum;
+import com.postech.infra.dto.request.PedidoProdutoRequestDTO;
+import com.postech.infra.dto.request.PedidoRequestDTO;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static com.postech.application.utils.EstadoPedidoUtils.validaEstado;
+
+public class PedidoUseCases {
+
+<span class="fc" id="L26">    private static final Logger LOG = Logger.getLogger(PedidoUseCases.class.getName());</span>
+
+    private final RepositorioDePedidoGateway repositorioDePedido;
+
+    private final ProdutoUseCases produtoUseCases;
+
+    private final PaymentClient paymentClient;
+
+    public PedidoUseCases(RepositorioDePedidoGateway repositorioDePedido, ProdutoUseCases produtoUseCases,
+<span class="fc" id="L35">                          PaymentClient paymentClient) {</span>
+<span class="fc" id="L36">        this.repositorioDePedido = repositorioDePedido;</span>
+<span class="fc" id="L37">        this.produtoUseCases = produtoUseCases;</span>
+<span class="fc" id="L38">        this.paymentClient = paymentClient;</span>
+<span class="fc" id="L39">    }</span>
+
+    public Pedido consultaPorId(Long id) {
+<span class="fc" id="L42">        Pedido pedido = repositorioDePedido.consultaPedidoPorId(id);</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (pedido == null) {</span>
+<span class="fc" id="L45">            throw new PedidoException(ErroPedidoEnum.PEDIDO_NAO_ENCONTRADO);</span>
+        }
+
+<span class="fc" id="L48">        return pedido;</span>
+    }
+
+    public Pedido atualizaEstadoPorIdDoPedido(Long idDoPedido, EstadoPedidoEnum estado) {
+<span class="fc" id="L52">        Pedido pedido = this.consultaPorId(idDoPedido);</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (!validaEstado(pedido.getEstado(), estado)) {</span>
+<span class="fc" id="L55">            throw new PedidoException(ErroPedidoEnum.ESTADO_INVALIDO);</span>
+        }
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (estado.equals(EstadoPedidoEnum.PAGO)) {</span>
+<span class="fc" id="L59">            pedido.setDataDoPagamento(LocalDate.now());</span>
+        }
+
+<span class="fc" id="L62">        pedido.setEstado(estado);</span>
+
+<span class="fc" id="L64">        return repositorioDePedido.salvaPedido(pedido);</span>
+
+    }
+
+    public Pedido notificaEstado(Long id) {
+<span class="fc" id="L69">        return this.consultaPorId(id);</span>
+    }
+
+    public List&lt;Pedido&gt; consultaTodosOsPedidos() {
+<span class="fc" id="L73">        List&lt;Pedido&gt; pedidos = repositorioDePedido.buscaTodosPedidos();</span>
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (pedidos.isEmpty()) {</span>
+<span class="fc" id="L76">            throw new PedidoException(ErroPedidoEnum.PEDIDOS_NAO_ECONTRADOS);</span>
+        }
+
+<span class="fc" id="L79">        return pedidos;</span>
+    }
+
+    public Pedido checkout(Long id) {
+<span class="nc" id="L83">        return this.atualizaEstadoPorIdDoPedido(id, EstadoPedidoEnum.PREPARANDO);</span>
+    }
+
+    public void deleta(Long id) {
+        try {
+<span class="fc" id="L88">            repositorioDePedido.deletaPedido(id);</span>
+<span class="nc" id="L89">        } catch (Exception ignore) {</span>
+<span class="nc" id="L90">            throw new PedidoException(ErroPedidoEnum.PEDIDO_NAO_ENCONTRADO);</span>
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">    }</span>
+
+    public List&lt;Pedido&gt; listarPedidos() {
+<span class="fc" id="L95">        List&lt;Pedido&gt; pedidos = consultaTodosOsPedidos();</span>
+
+<span class="fc" id="L97">        List&lt;Pedido&gt; pedidosFiltrados = filtrarPedidos(pedidos, List.of(EstadoPedidoEnum.CANCELADO, EstadoPedidoEnum.FINALIZADO));</span>
+
+<span class="fc" id="L99">        return ordenarListarPedidos(pedidosFiltrados);</span>
+    }
+
+    protected List&lt;Pedido&gt; ordenarListarPedidos(List&lt;Pedido&gt; pedidos) {
+<span class="fc" id="L103">        return pedidos.stream()</span>
+<span class="fc" id="L104">                .sorted(Comparator.comparing((Pedido p) -&gt; p.getEstado().getOrdem(), Comparator.reverseOrder())</span>
+<span class="fc" id="L105">                        .thenComparing(Pedido::getId))</span>
+<span class="fc" id="L106">                .toList();</span>
+    }
+
+    protected List&lt;Pedido&gt; filtrarPedidos(List&lt;Pedido&gt; pedidos, List&lt;EstadoPedidoEnum&gt; estadosParaRetirar){
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        return pedidos.stream().filter(x -&gt; !estadosParaRetirar.contains(x.getEstado())).collect(Collectors.toList());</span>
+    }
+
+    public Pedido salvarPedido(Pedido pedido){
+<span class="fc" id="L114">        List&lt;PedidoProduto&gt; pedidosProdutos = pedido.getPedidosProdutos();</span>
+
+<span class="fc" id="L116">        pedido.setPedidosProdutos(null);</span>
+
+<span class="fc" id="L118">        Pedido pedidoSalvo = repositorioDePedido.salvaPedido(pedido);</span>
+
+<span class="fc" id="L120">        pedidosProdutos.forEach(x -&gt; {</span>
+<span class="fc" id="L121">            x.setPedido(pedidoSalvo);</span>
+<span class="fc" id="L122">        });</span>
+
+<span class="fc" id="L124">        pedidoSalvo.setPedidosProdutos(pedidosProdutos);</span>
+
+<span class="fc" id="L126">        Pedido pedidoFinal = repositorioDePedido.salvaPedido(pedidoSalvo);</span>
+
+        try {
+<span class="fc" id="L129">            paymentClient.enviarPagamento(pedidoFinal.getClienteId(), pedidoFinal.getId(), Pedido.getValorPedido(pedidoFinal));</span>
+<span class="fc" id="L130">        } catch (Exception exception) {</span>
+<span class="fc" id="L131">            LOG.log(Level.SEVERE, &quot;Error ao tentar enviar pagamento&quot;);</span>
+<span class="fc" id="L132">            throw new DominioException(&quot;Error ao tentar enviar pagamento&quot;, exception);</span>
+<span class="fc" id="L133">        }</span>
+
+<span class="fc" id="L135">        return pedidoFinal;</span>
+    }
+
+    public Pedido criaPedido(PedidoRequestDTO pedidoDTO) {
+<span class="fc" id="L139">        List&lt;PedidoProdutoRequestDTO&gt; pedidosProdutos = pedidoDTO.getPedidosProdutos();</span>
+
+<span class="fc" id="L141">        List&lt;PedidoProduto&gt; pedidoProdutos = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (PedidoProdutoRequestDTO pedidosProduto : pedidosProdutos) {</span>
+<span class="fc" id="L144">            PedidoProduto pedidoProduto = new PedidoProduto();</span>
+<span class="fc" id="L145">            pedidoProduto.setProduto(produtoUseCases.consultaPorId(pedidosProduto.getProdutoId()));</span>
+<span class="fc" id="L146">            pedidoProduto.setQuantidade(pedidosProduto.getQuantidade());</span>
+<span class="fc" id="L147">            pedidoProdutos.add(pedidoProduto);</span>
+<span class="fc" id="L148">        }</span>
+
+<span class="fc" id="L150">        return new Pedido(null, pedidoDTO.getClienteId(), EstadoPedidoEnum.RECEBIDO, null, pedidoProdutos);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,5 +1,5 @@
-com/postech/application/usecases/PedidoUseCasesTest.class
 com/postech/application/utils/EstadoPedidoUtilsTest.class
 com/postech/domain/entities/PedidoTest.class
 com/postech/domain/utils/ValidacaoUtilsTest.class
 com/postech/application/usecases/ProdutoUseCasesTest.class
+PedidoUseCasesTest.class

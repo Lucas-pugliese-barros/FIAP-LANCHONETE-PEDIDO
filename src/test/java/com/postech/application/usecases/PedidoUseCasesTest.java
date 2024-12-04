@@ -1,18 +1,28 @@
-package com.postech.application.usecases;
-
+import com.postech.application.client.PaymentClient;
 import com.postech.application.gateways.RepositorioDePedidoGateway;
+import com.postech.application.usecases.PedidoUseCases;
+import com.postech.application.usecases.ProdutoUseCases;
 import com.postech.domain.entities.Pedido;
 import com.postech.domain.entities.PedidoProduto;
 import com.postech.domain.entities.Produto;
 import com.postech.domain.enums.CategoriaProdutoEnum;
 import com.postech.domain.enums.EstadoPedidoEnum;
+import com.postech.domain.exceptions.DominioException;
+import com.postech.domain.exceptions.PedidoException;
+import com.postech.infra.dto.request.PedidoProdutoRequestDTO;
+import com.postech.infra.dto.request.PedidoRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class PedidoUseCasesTest {
 
@@ -22,143 +32,145 @@ public class PedidoUseCasesTest {
     @Mock
     private ProdutoUseCases produtoUseCases;
 
-    @Spy
+    @Mock
+    private PaymentClient paymentClient;
+
     @InjectMocks
-    public PedidoUseCases pedidoUseCases;
+    private PedidoUseCases pedidoUseCases;
+
+    private Pedido pedido;
+    private PedidoRequestDTO pedidoRequestDTO;
+    private PedidoProdutoRequestDTO pedidoProdutoRequestDTO;
 
     @BeforeEach
-    public void init(){
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        Produto produto = new Produto(1L, "nome", "descricao", CategoriaProdutoEnum.LANCHE, 20.0);
+
+        PedidoProduto pedidoProduto = new PedidoProduto();
+        pedidoProduto.setProduto(produto);
+        pedidoProduto.setQuantidade(10);
+
+        pedido = new Pedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null, List.of(pedidoProduto));
+
+        pedidoProdutoRequestDTO = new PedidoProdutoRequestDTO();
+        pedidoProdutoRequestDTO.setProdutoId(1L);
+        pedidoProdutoRequestDTO.setQuantidade(1);
+
+        pedidoRequestDTO = new PedidoRequestDTO();
+        pedidoRequestDTO.setClienteId(1L);
+        pedidoRequestDTO.setPedidosProdutos(List.of(pedidoProdutoRequestDTO));
     }
 
     @Test
-    public void testOrdenarListarPedidosPorAntiguidade(){
-        Produto produto = getProduto(1L, "LANCHE", "LANCHE", CategoriaProdutoEnum.LANCHE, 2.0);
-        Pedido pedido = getPedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto = getPedidoProduto(1L, pedido, produto, 1);
-        pedido.setPedidosProdutos(List.of(pedidoProduto));
+    public void testConsultaPorId_found() {
+        when(repositorioDePedido.consultaPedidoPorId(1L)).thenReturn(pedido);
 
+        Pedido result = pedidoUseCases.consultaPorId(1L);
 
-        Produto produto2 = getProduto(1L, "SOBREMESA", "SOBREMESA", CategoriaProdutoEnum.SOBREMESA, 2.0);
-        Pedido pedido2 = getPedido(2L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto2 = getPedidoProduto(2L, pedido2, produto2, 1);
-        pedido2.setPedidosProdutos(List.of(pedidoProduto2));
-
-        Produto produto3 = getProduto(1L, "BEBIDA", "BEBIDA", CategoriaProdutoEnum.BEBIDA, 2.0);
-        Pedido pedido3 = getPedido(3L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto3 = getPedidoProduto(3L, pedido3, produto3, 1);
-        pedido3.setPedidosProdutos(List.of(pedidoProduto3));
-
-        List<Pedido> pedidos = pedidoUseCases.ordenarListarPedidos(List.of(pedido, pedido2, pedido3));
-        assertEquals(pedidos.get(0), pedido);assertEquals(pedidos.get(1), pedido2);assertEquals(pedidos.get(2), pedido3);
+        assertNotNull(result);
+        assertEquals(pedido.getId(), result.getId());
+        verify(repositorioDePedido, times(1)).consultaPedidoPorId(1L);
     }
 
     @Test
-    public void testOrdenarListarPedidosPorEstado(){
-        Produto produto = getProduto(1L, "LANCHE", "LANCHE", CategoriaProdutoEnum.LANCHE, 2.0);
-        Pedido pedido = getPedido(1L, 1L, EstadoPedidoEnum.PREPARANDO, null);
-        PedidoProduto pedidoProduto = getPedidoProduto(1L, pedido, produto, 1);
-        pedido.setPedidosProdutos(List.of(pedidoProduto));
+    public void testConsultaPorId_notFound() {
+        when(repositorioDePedido.consultaPedidoPorId(1L)).thenReturn(null);
 
-
-        Produto produto2 = getProduto(1L, "SOBREMESA", "SOBREMESA", CategoriaProdutoEnum.SOBREMESA, 2.0);
-        Pedido pedido2 = getPedido(2L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto2 = getPedidoProduto(2L, pedido2, produto2, 1);
-        pedido2.setPedidosProdutos(List.of(pedidoProduto2));
-
-
-        Produto produto3 = getProduto(1L, "BEBIDA", "BEBIDA", CategoriaProdutoEnum.BEBIDA, 2.0);
-        Pedido pedido3 = getPedido(3L, 1L, EstadoPedidoEnum.PRONTO, null);
-        PedidoProduto pedidoProduto3 = getPedidoProduto(3L, pedido3, produto3, 1);
-        pedido3.setPedidosProdutos(List.of(pedidoProduto3));
-
-
-        List<Pedido> pedidos = pedidoUseCases.ordenarListarPedidos(List.of(pedido, pedido2, pedido3));
-
-        assertEquals(pedidos.get(0), pedido3);assertEquals(pedidos.get(1), pedido);assertEquals(pedidos.get(2), pedido2);
+        PedidoException thrown = assertThrows(PedidoException.class, () -> pedidoUseCases.consultaPorId(1L));
+        assertNull(thrown.getMessage());
     }
 
     @Test
-    public void testOrdenarListarPedidosPorEstadoEAntiguidade(){
-        Produto produto = getProduto(1L, "LANCHE", "LANCHE", CategoriaProdutoEnum.LANCHE, 2.0);
-        Pedido pedido = getPedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto = getPedidoProduto(1L, pedido, produto, 1);
-        pedido.setPedidosProdutos(List.of(pedidoProduto));
+    public void testAtualizaEstadoPorIdDoPedido() {
+        Pedido pedidoAtualizado = new Pedido(1L, 1L, EstadoPedidoEnum.PAGO, LocalDate.now(), null);
+        when(repositorioDePedido.consultaPedidoPorId(1L)).thenReturn(pedido);
+        when(repositorioDePedido.salvaPedido(any(Pedido.class))).thenReturn(pedidoAtualizado);
 
+        Pedido result = pedidoUseCases.atualizaEstadoPorIdDoPedido(1L, EstadoPedidoEnum.PAGO);
 
-        Produto produto2 = getProduto(1L, "SOBREMESA", "SOBREMESA", CategoriaProdutoEnum.SOBREMESA, 2.0);
-        Pedido pedido2 = getPedido(2L, 1L, EstadoPedidoEnum.PRONTO, null);
-        PedidoProduto pedidoProduto2 = getPedidoProduto(2L, pedido2, produto2, 1);
-        pedido2.setPedidosProdutos(List.of(pedidoProduto2));
-
-
-        Produto produto3 = getProduto(1L, "BEBIDA", "BEBIDA", CategoriaProdutoEnum.BEBIDA, 2.0);
-        Pedido pedido3 = getPedido(3L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto3 = getPedidoProduto(3L, pedido3, produto3, 1);
-        pedido3.setPedidosProdutos(List.of(pedidoProduto3));
-
-        List<Pedido> pedidos = pedidoUseCases.ordenarListarPedidos(List.of(pedido, pedido2, pedido3));
-        assertEquals(pedidos.get(0), pedido2);assertEquals(pedidos.get(1), pedido);assertEquals(pedidos.get(2), pedido3);
+        assertNotNull(result);
+        assertEquals(EstadoPedidoEnum.PAGO, result.getEstado());
+        assertEquals(pedidoAtualizado.getDataDoPagamento(), result.getDataDoPagamento());
+        verify(repositorioDePedido, times(1)).salvaPedido(any(Pedido.class));
     }
 
     @Test
-    public void testFiltrarPedidos(){
-        Produto produto = getProduto(1L, "LANCHE", "LANCHE", CategoriaProdutoEnum.LANCHE, 2.0);
-        Pedido pedido = getPedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto = getPedidoProduto(1L, pedido, produto, 1);
-        pedido.setPedidosProdutos(List.of(pedidoProduto));
+    public void testAtualizaEstadoPorIdDoPedido_estadoInvalido() {
+        when(repositorioDePedido.consultaPedidoPorId(1L)).thenReturn(pedido);
 
-
-        Produto produto2 = getProduto(1L, "SOBREMESA", "SOBREMESA", CategoriaProdutoEnum.SOBREMESA, 2.0);
-        Pedido pedido2 = getPedido(2L, 1L, EstadoPedidoEnum.CANCELADO, null);
-        PedidoProduto pedidoProduto2 = getPedidoProduto(2L, pedido2, produto2, 1);
-        pedido2.setPedidosProdutos(List.of(pedidoProduto2));
-
-
-        Produto produto3 = getProduto(1L, "BEBIDA", "BEBIDA", CategoriaProdutoEnum.BEBIDA, 2.0);
-        Pedido pedido3 = getPedido(3L, 1L, EstadoPedidoEnum.FINALIZADO, null);
-        PedidoProduto pedidoProduto3 = getPedidoProduto(3L, pedido3, produto3, 1);
-        pedido3.setPedidosProdutos(List.of(pedidoProduto3));
-
-        List<Pedido> pedidos = pedidoUseCases.filtrarPedidos(List.of(pedido, pedido2, pedido3), List.of(EstadoPedidoEnum.FINALIZADO, EstadoPedidoEnum.CANCELADO));
-        assertEquals(pedidos.get(0), pedido);assertEquals(1, pedidos.size());
+        PedidoException thrown = assertThrows(PedidoException.class, () -> pedidoUseCases.atualizaEstadoPorIdDoPedido(1L, EstadoPedidoEnum.FINALIZADO));
+        assertNull(thrown.getMessage());
     }
 
     @Test
-    public void teslistarPedidos(){
-        Produto produto = getProduto(1L, "LANCHE", "LANCHE", CategoriaProdutoEnum.LANCHE, 2.0);
-        Pedido pedido = getPedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto = getPedidoProduto(1L, pedido, produto, 1);
-        pedido.setPedidosProdutos(List.of(pedidoProduto));
+    public void testNotificaEstado() {
+        when(repositorioDePedido.consultaPedidoPorId(1L)).thenReturn(pedido);
 
+        Pedido result = pedidoUseCases.notificaEstado(1L);
 
-        Produto produto2 = getProduto(1L, "SOBREMESA", "SOBREMESA", CategoriaProdutoEnum.SOBREMESA, 2.0);
-        Pedido pedido2 = getPedido(2L, 1L, EstadoPedidoEnum.RECEBIDO, null);
-        PedidoProduto pedidoProduto2 = getPedidoProduto(2L, pedido2, produto2, 1);
-        pedido2.setPedidosProdutos(List.of(pedidoProduto2));
-
-
-        Produto produto3 = getProduto(1L, "BEBIDA", "BEBIDA", CategoriaProdutoEnum.BEBIDA, 2.0);
-        Pedido pedido3 = getPedido(3L, 1L, EstadoPedidoEnum.FINALIZADO, null);
-        PedidoProduto pedidoProduto3 = getPedidoProduto(3L, pedido3, produto3, 1);
-        pedido3.setPedidosProdutos(List.of(pedidoProduto3));
-
-        Mockito.doReturn(List.of(pedido3, pedido, pedido2)).when(pedidoUseCases).consultaTodosOsPedidos();
-
-        List<Pedido> pedidos = pedidoUseCases.listarPedidos();
-        assertEquals(pedidos.get(0), pedido);assertEquals(pedidos.get(1), pedido2);assertEquals(2, pedidos.size());
-
+        assertNotNull(result);
+        verify(repositorioDePedido, times(1)).consultaPedidoPorId(1L);
     }
 
-    private PedidoProduto getPedidoProduto(Long id, Pedido pedido, Produto produto, Integer quantidade) {
-        return new PedidoProduto(id,  pedido,  produto, quantidade);
+    @Test
+    public void testConsultaTodosOsPedidos() {
+        when(repositorioDePedido.buscaTodosPedidos()).thenReturn(List.of(pedido));
+
+        List<Pedido> result = pedidoUseCases.consultaTodosOsPedidos();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(repositorioDePedido, times(1)).buscaTodosPedidos();
     }
 
-    private Pedido getPedido(Long id, Long clienteId, EstadoPedidoEnum estado, List<PedidoProduto> pedidosProdutos) {
-        return new Pedido(id, clienteId,  estado, null, pedidosProdutos);
+    @Test
+    public void testConsultaTodosOsPedidos_emptyList() {
+        when(repositorioDePedido.buscaTodosPedidos()).thenReturn(List.of());
+
+        PedidoException thrown = assertThrows(PedidoException.class, () -> pedidoUseCases.consultaTodosOsPedidos());
+        assertNull(thrown.getMessage());
     }
 
-    private Produto getProduto(Long id, String nome, String descricao, CategoriaProdutoEnum categoria, Double preco) {
-        return new Produto(id, nome, descricao, categoria, preco);
+    @Test
+    public void testDeleta() {
+        pedidoUseCases.deleta(1L);
+
+        verify(repositorioDePedido, times(1)).deletaPedido(1L);
+    }
+
+    @Test
+    public void testSalvarPedido() {
+        Pedido pedidoFinal = new Pedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null, List.of(new PedidoProduto()));
+        when(repositorioDePedido.salvaPedido(any(Pedido.class))).thenReturn(pedidoFinal);
+        doNothing().when(paymentClient).enviarPagamento(any(), any(), any());
+
+        Pedido result = pedidoUseCases.salvarPedido(pedido);
+
+        assertNotNull(result);
+        verify(repositorioDePedido, times(2)).salvaPedido(any(Pedido.class));
+        verify(paymentClient, times(1)).enviarPagamento(anyLong(), anyLong(), any(BigDecimal.class));
+    }
+
+    @Test
+    public void testSalvarPedido_paymentFailure() {
+        Pedido pedidoFinal = new Pedido(1L, 1L, EstadoPedidoEnum.RECEBIDO, null, List.of(new PedidoProduto()));
+        when(repositorioDePedido.salvaPedido(any(Pedido.class))).thenReturn(pedidoFinal);
+        doThrow(new DominioException("Error ao tentar enviar pagamento")).when(paymentClient).enviarPagamento(anyLong(), anyLong(), any(BigDecimal.class));
+
+        DominioException thrown = assertThrows(DominioException.class, () -> pedidoUseCases.salvarPedido(pedido));
+        assertEquals("Error ao tentar enviar pagamento", thrown.getMessage());
+    }
+
+    @Test
+    public void testCriaPedido() {
+        when(produtoUseCases.consultaPorId(1L)).thenReturn(null);
+
+        Pedido result = pedidoUseCases.criaPedido(pedidoRequestDTO);
+
+        assertNotNull(result);
+        assertEquals(pedidoRequestDTO.getClienteId(), result.getClienteId());
+        assertEquals(EstadoPedidoEnum.RECEBIDO, result.getEstado());
     }
 }
